@@ -13,6 +13,8 @@ namespace MediaBrowser.Model.Configuration
 
         public bool EnableRealtimeMonitor { get; set; }
 
+        public bool KeepDeletedItems { get; set; }
+
         public bool EnableChapterImageExtraction { get; set; }
 
         public bool ExtractChapterImagesDuringLibraryScan { get; set; }
@@ -97,6 +99,8 @@ namespace MediaBrowser.Model.Configuration
             EnableInternetProviders = true;
             EnableAutomaticSeriesGrouping = true;
             SeasonZeroDisplayName = "Specials";
+
+            KeepDeletedItems = false;
         }
     }
 

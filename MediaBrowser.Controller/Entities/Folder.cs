@@ -368,17 +368,20 @@ namespace MediaBrowser.Controller.Entities
                 // If any items were added or removed....
                 if (newItems.Count > 0 || currentChildren.Count != validChildren.Count)
                 {
-                    // That's all the new and changed ones - now see if there are any that are missing
-                    var itemsRemoved = currentChildren.Values.Except(validChildren).ToList();
-
-                    foreach (var item in itemsRemoved)
+                    if (!LibraryManager.GetLibraryOptions(this).KeepDeletedItems) // setting for this library whether to remove deleted items
                     {
-                        if (item.IsFileProtocol)
-                        {
-                            Logger.LogDebug("Removed item: " + item.Path);
+                        // That's all the new and changed ones - now see if there are any that are missing
+                        var itemsRemoved = currentChildren.Values.Except(validChildren).ToList();
 
-                            item.SetParent(null);
-                            LibraryManager.DeleteItem(item, new DeleteOptions { DeleteFileLocation = false }, this, false);
+                        foreach (var item in itemsRemoved)
+                        {
+                            if (item.IsFileProtocol)
+                            {
+                                Logger.LogDebug("Removed item: " + item.Path);
+
+                                item.SetParent(null);
+                                LibraryManager.DeleteItem(item, new DeleteOptions { DeleteFileLocation = false }, this, false);
+                            }
                         }
                     }
 
